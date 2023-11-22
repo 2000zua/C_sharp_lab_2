@@ -38,7 +38,8 @@ namespace FormsApp.views
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "Form_task_5";
             this.Text = "Form_task_5";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form_task_5_MouseDown);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_task_5_Paint);
+            this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Form_task_5_MouseDoubleClick);
             this.ResumeLayout(false);
 
         }

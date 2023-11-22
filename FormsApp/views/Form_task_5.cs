@@ -10,60 +10,51 @@ namespace FormsApp.views
 {
     public partial class Form_task_5 : Form
     {
-        private List<Point> points = new List<Point>();
-        private List<Point> lines = new List<Point>();
-        private Pen pen = new Pen(Color.Black);
-        private bool drawing;
+        private List<Point> polylinePoints;
+        private Pen pen;
 
         public Form_task_5()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
+
             this.Size = new Size(800, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            this.MouseDown += new MouseEventHandler(Form_task_5_MouseDown);
+            polylinePoints = new List<Point>();
+            pen = new Pen(Color.Black);
+            pen.Width = 2;
 
             this.Text = "Polyline Drawing App";
+
+            this.MouseDoubleClick += Form_task_5_MouseDoubleClick;
+            this.Paint += Form_task_5_Paint;
         }
 
-        private void Form_task_5_MouseDown(object sender, MouseEventArgs e)
+        private void Form_task_5_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            polylinePoints.Add(new Point(e.X, e.Y));
+
+            this.Invalidate();
+
+            if (polylinePoints.Count >= 2)
             {
-                points.Add(e.Location);
-                drawing = true;
-
-                if (points.Count >= 2)
-                {
-                    lines.Add(points[points.Count - 2]);
-                    lines.Add(points[points.Count - 1]);
-                }
-
-                this.Invalidate();
+                Graphics g = this.CreateGraphics();
+                g.DrawLine(pen, polylinePoints[0], polylinePoints[polylinePoints.Count - 1]);
             }
 
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            using (Graphics g = e.Graphics)
+            if (polylinePoints.Count >= 3)
             {
-                g.DrawLines(pen, lines.ToArray());
-
-                if (drawing)
-                {
-                    g.DrawLines(pen, points.ToArray());
-
-                    if (points.Count >= 2)
-                    {
-                        g.DrawLine(pen, points[points.Count - 1], points[0]);
-                    }
-                }
+                Graphics g = this.CreateGraphics();
+                g.DrawLine(pen, polylinePoints[polylinePoints.Count - 1], polylinePoints[0]);
             }
         }
 
+        private void Form_task_5_Paint(object sender, PaintEventArgs e)
+        {
+            if (polylinePoints.Count > 1)
+            {
+                e.Graphics.DrawLines(pen, polylinePoints.ToArray());
+            }
+        }
     }
 }

@@ -10,56 +10,47 @@ namespace FormsApp.views
 {
     public partial class Form_task_4 : Form
     {
-        private List<Point> points = new List<Point>();
-        private Pen pen = new Pen(Color.Black);
-        private int clickCount = 0;
+        private List<Point> trianglePoints;
+        private Rectangle rectangle;
+
 
         public Form_task_4()
         {
             InitializeComponent();
 
-            this.DoubleBuffered = true;
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            this.MouseDown += new MouseEventHandler(Form_task_4_MouseDown);
-
             this.Text = "Triangle Drawing App";
+            trianglePoints = new List<Point>();
+
+            this.MouseClick += Form_task_4_MouseClick;
+            this.Paint += Form_task_4_Paint;
         }
 
-        private void Form_task_4_MouseDown(object sender, MouseEventArgs e)
+        private void Form_task_4_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            trianglePoints.Add(new Point(e.X, e.Y));
+
+            Size size = new Size(width: e.X/2, height: e.Y/3);
+            rectangle = new Rectangle(e.Location, size);
+
+            this.Invalidate();
+
+            if (trianglePoints.Count == 3)
             {
-                points.Add(e.Location);
-                clickCount++;
-
-                if (clickCount >= 3)
-                {
-                    this.Invalidate();
-                    clickCount = 0;
-                }
-            }
-
-        }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            using (Graphics g = e.Graphics)
-            {
-                for (int i = 0; i < points.Count - 2; i += 3)
-                {
-                    Point p1 = points[i];
-                    Point p2 = points[i + 1];
-                    Point p3 = points[i + 2];
-
-                    g.DrawLine(pen, p1, p2);
-                    g.DrawLine(pen, p2, p3);
-                    g.DrawLine(pen, p3, p1);
-                }
+                trianglePoints.Clear();
             }
         }
 
+        private void Form_task_4_Paint(object sender, PaintEventArgs e)
+        {
+
+            if (trianglePoints.Count == 2)
+            {
+                e.Graphics.FillRectangle(Brushes.Blue, rectangle);
+            }
+            else if (trianglePoints.Count == 3)
+            {
+                e.Graphics.FillRectangle(Brushes.Red, rectangle);
+            }
+        }
     }
 }
