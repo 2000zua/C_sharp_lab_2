@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace FormsApp.views
@@ -13,7 +9,6 @@ namespace FormsApp.views
         private Color backgroundColor = Color.Blue;
         private Color snowflakeColor = Color.White;
         private int snowflakeRadius = 20;
-        //private MouseEventHandler MouseClick;
 
         public Form_task_2()
         {

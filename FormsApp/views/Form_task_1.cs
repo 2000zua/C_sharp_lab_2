@@ -8,7 +8,6 @@ namespace FormsApp.views
         private Point startPoint;
         private Point endPoint;
         private Pen pen;
-        private bool drawing;
 
 
         public Form_task_1()
@@ -32,7 +31,6 @@ namespace FormsApp.views
             if (e.Button == MouseButtons.Left)
             {
                 this.endPoint = e.Location;
-                this.drawing = false;
                 this.Invalidate();
             }
         }
@@ -43,7 +41,6 @@ namespace FormsApp.views
             {
                 this.startPoint = e.Location;
                 this.endPoint = e.Location;
-                this.drawing = true;
             }
         }
 
